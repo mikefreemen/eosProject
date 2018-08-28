@@ -1,5 +1,9 @@
 const express = require('express')
 const router = express.Router()
+
+const recentBlocksProvider = require('./providers/recentBlocksProvider')
+
+/*
 const eosjs = require('eosjs')
 
 const config = {
@@ -13,8 +17,16 @@ const config = {
 }
 
 const eos = eosjs(config)
+*/
 
 router.get('/', (req, res) => {
+
+  recentBlocksProvider.get().then(resp => {
+    console.log('got back from recentBlocksProvider:')
+    console.log(resp)
+    res.status(200).send(resp)
+  })
+/*
   fetch('https://api.eosnewyork.io/v1/chain/get_info').then(body => (body.json())).then(resp => {
     let headBlockNum = resp.head_block_num
     console.log(`headBlockNum: ${resp.head_block_num}`)
@@ -28,6 +40,7 @@ router.get('/', (req, res) => {
         res.status(200).send(resp)
       })
   })
+*/
 })
 
 module.exports = router
