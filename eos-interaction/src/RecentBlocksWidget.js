@@ -4,7 +4,7 @@ const { BlockList } = require('./BlockList')
 class RecentBlocksWidget extends Component {
 
   state = {
-    blockInfo: '<don\'t have any yet>'
+    blockInfo: null
   }
 
   componentDidMount() {
@@ -22,9 +22,14 @@ class RecentBlocksWidget extends Component {
     })
   }
 
+  handleSubmit = (e) => {
+    this.fetchRecentBlocks()
+    e.preventDefault()
+  }
+
   render(props) {
     return (<div>
-      <form onSubmit={this.fetchRecentBlocks}>
+      <form onSubmit={this.handleSubmit}>
         <input type="submit" value="Load" />
       </form>
       <BlockList blockInfo={this.state.blockInfo} />

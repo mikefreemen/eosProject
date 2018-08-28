@@ -14,7 +14,12 @@ class SingleBlock extends Component {
   render() {
     console.log('from SingleBlock:')
     console.log(this.props.blockInfo)
-    return <div>[{JSON.stringify(this.props.blockInfo, null, 2)}]</div>
+    return this.props.blockInfo && (<div>
+      <div>Block hash: {this.props.block_num}</div>
+      <div>Timestamp: {this.props.blockInfo.timestamp}</div>
+      <div># Actions in block: {this.props.blockInfo.transactions.length}</div>
+      {/*<div>[{JSON.stringify(this.props.blockInfo, null, 2)}]</div>*/}
+    </div>)
   }
 }
 
