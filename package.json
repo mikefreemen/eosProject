@@ -1,0 +1,11 @@
+{
+  "name": "eos-interview-project",
+  "version": "1.0.0",
+  "main": "server.js",
+  "repository": "https://github.com/mikefreemen/eosProject.git",
+  "author": "Mike Freemen <mike@mikefreemen.com>",
+  "license": "MIT",
+  "dependencies": {
+    "create-react-app": "^1.5.2"
+  }
+}
