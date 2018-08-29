@@ -7,32 +7,26 @@ const recentBlocksProvider = require('./providers/recentBlocksProvider')
 const ricardianContractProvider = require('./providers/ricardianContractProvider')
 
 router.get('/', async (req, res) => {
-  recentBlocksProvider.get().then(blockInfo => {
-    // console.log('got back from recentBlocksProvider:')
-    // console.log(blockInfo)
-    // Add Ricardian Clauses, where we have the data to do so
-// NOTE: requirements describe "actions".  Actions are within transactions: block.transactions[{
-//   trx.transaction.actions[{ account }] // use account to getRicardianClauses
-// }]
+  const blockInfo = await recentBlocksProvider.get()
+    // Add Ricardian Contract, where we have the data to do so
     const xformedBlockInfo = blockInfo.map(blockData => {
       const block = blockData.rawBlockData
-      // for each action, see if there is an account name (code name?), pull abi, see if there are Ricardian clauses
+      // for each action, see if there is an account name, pull abi, see if there is a Ricardian contract
       // there is an action with a contract
       let actionAccount = _.get(block, 'transactions[0].trx.transaction.actions[0].account')
       if( actionAccount ) {
 console.log(`\n\n-> actionAccount: ${actionAccount}`)
-        ricardianContractProvider.get(actionAccount).then(ricardianContractText => {
+      let ricardianContractText = await ricardianContractProvider.get(actionAccount)
 console.log('==> ricardianContractText:')
 console.log(ricardianContractText)
-          if( recardianContractText ) {
-            return {
-              ...blockData,
-              ricardianContractAsHtml: md.render(ricardianContractText)
-            }
-          } else {
-            return block
+        if( ricardianContractText ) {
+          return {
+            ...blockData,
+            ricardianContractAsHtml: md.render(ricardianContractText)
           }
-        })
+        } else {
+          return block
+        }
       } else {
         // otherwise, return unchanged block
         return block
