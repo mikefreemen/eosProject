@@ -13,6 +13,7 @@ const config = {
 const eos = eosjs(config)
 
 function get () {
+  let recentBlocks = []
   return fetch('https://api.eosnewyork.io/v1/chain/get_info').then(body => (body.json())).then(resp => {
     console.log(`headBlockNum: ${resp.head_block_num}`)
     if( !resp.head_block_num ) {
@@ -24,8 +25,16 @@ function get () {
     // let requestList = []
     // [(headBlockNum-10...headBlockNum].forEach(el => {
     return eos.getBlock(headBlockNum).then(resp => {
-      console.log(resp)
-      return resp
+      // console.log(resp)
+      recentBlocks.push(resp)
+      return recentBlocks
+      /*
+      return resp.map(el => ({
+        blockId: el.block_num,
+        timestamp: el.blockstamp,
+        actions: el.transactions
+      })
+      */
       // res.status(200).send(resp)
     })
   })
