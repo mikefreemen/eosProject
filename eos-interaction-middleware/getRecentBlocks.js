@@ -15,9 +15,10 @@ router.get('/', async (req, res) => {
     // for each action, see if there is an account name, pull abi, see if there is a Ricardian contract
     // there is an action with a contract
     let actionAccount = _.get(rawBlock, 'transactions[0].trx.transaction.actions[0].account')
-    if( actionAccount ) {
 // console.log(`\n\n-> actionAccount: ${actionAccount}`)
-      let ricardianContractText = await ricardianContractProvider.get(actionAccount)
+    if( actionAccount ) {
+      let ricardianContractReplacementValues = _.get(rawBlock, 'transactions[0].trx.transaction.actions[0].data')
+      let ricardianContractText = await ricardianContractProvider.get(actionAccount, ricardianContractReplacementValues)
       if( ricardianContractText ) {
         return {
           ...blockData,

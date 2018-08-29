@@ -1,6 +1,7 @@
 const eosjs = require('eosjs')
 const config = require('config-yml')
 const _ = require('lodash')
+const mustache = require('mustache')
 
 const eosConfig = {
   expireInSeconds: 60,
@@ -13,11 +14,13 @@ const eosConfig = {
 
 const eos = eosjs(eosConfig)
 
-async function get (accountName) {
+async function get (accountName, view) {
   // console.log(`abi provider accountName[${accountName}]`)
-  let abiResult = await eos.getAbi(accountName)
-  let rc = _.get(abiResult, 'abi.actions[0].ricardian_contract', '')
-  return rc
+  let abi = await eos.getAbi(accountName)
+  let ricardianContractTemplate = _.get(abi, 'abi.actions[0].ricardian_contract', '')
+  let ricardianContractView = _.get(abi, 'abi.actions[0].ricardian_contract', '')
+  let output = mustache.render(ricardianContractTemplate, view)
+  return output
 }
 
 /*

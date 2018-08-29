@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
+import './App.css'
 const { blockPropType } = require('./propTypes/Block.js')
 
 class SingleBlock extends Component {
@@ -28,14 +29,13 @@ class SingleBlock extends Component {
       <div>Block hash: {this.props.blockInfo.blockHash}</div>
       <div>Timestamp: {this.props.blockInfo.timestamp}</div>
       <div># Actions in block: {this.props.blockInfo.numActions}</div>
-      <div style={{'textAlign': 'left'}} dangerouslySetInnerHTML={ { __html: this.props.blockInfo.ricardianContractAsHtml } } />
     </div>
   )
 
   blockDetails = () => (
     <div>
       <div>{JSON.stringify(this.props.blockInfo.rawBlockData, null, 2)}</div>
-      <div style={{'textAlign': 'left'}} dangerouslySetInnerHTML={ { __html: this.props.blockInfo.ricardianContractAsHtml } } />
+      <div className={'ricardian-contract'} dangerouslySetInnerHTML={ { __html: this.props.blockInfo.ricardianContractAsHtml } } />
     </div>
   )
 
