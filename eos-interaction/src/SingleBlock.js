@@ -24,23 +24,23 @@ class SingleBlock extends Component {
   }
 
   blockSummary = (props) => (
-    <div onClick={this.handleBlockClick} >
+    <div>
       <div>Block hash: {this.props.blockInfo.blockId}</div>
       <div>Timestamp: {this.props.blockInfo.timestamp}</div>
-      <div># Actions in block: {this.props.blockInfo.transactions.length}</div>
+      <div># Actions in block: {this.props.blockInfo.numActions}</div>
     </div>
   )
 
   blockDetails = (props) => (
-    <div onClick={this.handleBlockClick} >{JSON.stringify(this.props.blockInfo, null, 2)}</div>
+    <div>{JSON.stringify(this.props.blockInfo.rawBlockData, null, 2)}</div>
   )
 
   render() {
     if( !this.props.blockInfo ) return null
-    return (<Card>
+    return (<Card onClick={this.handleBlockClick}>
       <CardContent>
         { this.state.detailedView && this.blockDetails() }
-        { !this.state.detailedView && this.blockSummary()}
+        { !this.state.detailedView && this.blockSummary() }
       </CardContent>
     </Card>)
   }

@@ -38,10 +38,20 @@ async function get () {
   let rawRecentBlocks = await Promise.all(requestList)
 
   // xform BlockArray by pruning all the data we don't need to send the browser
+// NOTE: requirements describe "actions".  Actions are within transactions: block.transactions[{
+//   trx.transaction.actions[{ account }] // use account to getRicardianClauses
+// }]
   let xformedBlockArray = rawRecentBlocks.map(el => ({
     blockId: el.block_num,
     timestamp: el.timestamp,
-    transactions: el.transactions
+    numActions: el.transactions.reduce((acc, tx) => {
+      if( tx.trx && tx.trx.transaction && tx.trx.transaction.actions ) {
+        return tx.trx.transaction.actions.length
+      } else {
+        return 0
+      }
+    }, 0),
+    rawBlockData: el
   }))
   return xformedBlockArray
 }

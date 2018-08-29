@@ -14,7 +14,10 @@ class RecentBlocksWidget extends Component {
   }
 
   fetchRecentBlocks = () => {
-    this.setState({status: 'Loading...'})
+    this.setState({
+      status: 'Loading...',
+      blockListInfo: []
+    })
     fetch('http://localhost:3001/getRecentBlocks').then(body => (body.json())).then((recentBlocks) => {
       this.setState({
         blockListInfo: recentBlocks,
