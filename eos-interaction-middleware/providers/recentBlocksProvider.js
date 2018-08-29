@@ -1,16 +1,16 @@
 const eosjs = require('eosjs')
+const config = require('config-yml')
 
-const config = {
+const eosConfig = {
   expireInSeconds: 60,
   broadcast: true,
   debug: false,
   sign: true,
-  // httpEndpoint: 'https://api.eosnewyork.io',
-  httpEndpoint: 'https://api.bp.fish',
-  chainId: 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906'
+  httpEndpoint: config.bpApiBaseUrl,
+  chainId: config.chainId
 }
 
-const eos = eosjs(config)
+const eos = eosjs(eosConfig)
 
 function getBlockById(id) {
   return eos.getBlock(id).then(block => {
@@ -19,8 +19,7 @@ function getBlockById(id) {
 }
 
 async function get () {
-  const headBlockNum = await fetch('https://api.eosnewyork.io/v1/chain/get_info').then(body => (body.json())).then(resp => {
-    console.log(`headBlockNum: ${resp.head_block_num}`)
+  const headBlockNum = await fetch(`${config.bpApiBaseUrl}/v1/chain/get_info`).then(body => (body.json())).then(resp => {
     if( !resp.head_block_num ) {
       throw Error({error: 'head_block_num returned as non-number'})
       //res.status(500).send({error: 'head_block_num returned as non-number'})
@@ -28,8 +27,7 @@ async function get () {
     return resp.head_block_num
   })
 
-  // Construct request list
-  // const blockNumbers = new Array(3).map((x, i) => ( headBlockNum - i ))
+  // Construct block request list
   const blockNumbers = []
   for( let idx=0; idx<10; idx++) {
     blockNumbers.push(headBlockNum - idx)

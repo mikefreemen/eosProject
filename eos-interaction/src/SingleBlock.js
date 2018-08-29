@@ -1,4 +1,7 @@
 import React, {Component} from 'react'
+import Card from '@material-ui/core/Card'
+import CardContent from '@material-ui/core/CardContent'
+const { blockPropType } = require('./propTypes/Block.js')
 
 class SingleBlock extends Component {
   state = {
@@ -21,7 +24,7 @@ class SingleBlock extends Component {
   }
 
   blockSummary = (props) => (
-    <div onClick={this.handleBlockClick}>
+    <div onClick={this.handleBlockClick} >
       <div>Block hash: {this.props.blockInfo.blockId}</div>
       <div>Timestamp: {this.props.blockInfo.timestamp}</div>
       <div># Actions in block: {this.props.blockInfo.transactions.length}</div>
@@ -29,16 +32,26 @@ class SingleBlock extends Component {
   )
 
   blockDetails = (props) => (
-    <div onClick={this.handleBlockClick}>{JSON.stringify(this.props.blockInfo, null, 2)}</div>
+    <div onClick={this.handleBlockClick} >{JSON.stringify(this.props.blockInfo, null, 2)}</div>
   )
 
   render() {
     if( !this.props.blockInfo ) return null
-    return (<div>
-      { this.state.detailedView && this.blockDetails() }
-      { !this.state.detailedView && this.blockSummary()}
-    </div>)
+    return (<Card>
+      <CardContent>
+        { this.state.detailedView && this.blockDetails() }
+        { !this.state.detailedView && this.blockSummary()}
+      </CardContent>
+    </Card>)
   }
+}
+
+SingleBlock.propTypes = {
+  blockInfo: blockPropType.isRequired
+}
+
+SingleBlock.defaultProps = {
+  blockInfo: null
 }
 
 export { SingleBlock }

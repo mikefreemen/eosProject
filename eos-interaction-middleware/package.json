@@ -11,6 +11,7 @@
   "dependencies": {
     "body-parser": "^1.18.3",
     "compression": "^1.7.3",
+    "config-yml": "^0.10.2",
     "cors": "^2.8.4",
     "eosjs": "^16.0.6",
     "express": "^4.16.3",

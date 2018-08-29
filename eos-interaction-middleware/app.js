@@ -17,12 +17,4 @@ app.use(compression())
 
 app.use('/getRecentBlocks', require('./getRecentBlocks'))
 
-/*
-app.get( "/", (req, res) => {
-  res.json({
-    status: "Root route return..."
-  })
-})
-*/
-
 module.exports = app

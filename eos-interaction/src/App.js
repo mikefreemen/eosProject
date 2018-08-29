@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import eosLogo from './eosLogo.gif'
 import './App.css';
 
 const { RecentBlocksWidget } = require('./RecentBlocksWidget')
@@ -10,10 +10,12 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
+          <img src={eosLogo} className="App-logo" alt="logo" />
+          <h1 className="App-title">Most Recent EOS Blocks</h1>
         </header>
-        <RecentBlocksWidget />
+        <div className='container'>
+          <RecentBlocksWidget />
+        </div>
       </div>
     );
   }

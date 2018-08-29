@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
+import Button from '@material-ui/core/Button'
 const { BlockList } = require('./BlockList')
 
 class RecentBlocksWidget extends Component {
 
   state = {
-    blockListInfo: []
+    blockListInfo: [],
+    status: ''
   }
 
   componentDidMount() {
@@ -12,8 +14,12 @@ class RecentBlocksWidget extends Component {
   }
 
   fetchRecentBlocks = () => {
+    this.setState({status: 'Loading...'})
     fetch('http://localhost:3001/getRecentBlocks').then(body => (body.json())).then((recentBlocks) => {
-      this.setState({blockListInfo: recentBlocks})
+      this.setState({
+        blockListInfo: recentBlocks,
+        status: ''
+      })
     }).catch((err) => {
       console.error(err)
     })
@@ -24,11 +30,10 @@ class RecentBlocksWidget extends Component {
     e.preventDefault()
   }
 
-  render(props) {
+  render() {
     return (<div>
-      <form onSubmit={this.handleSubmit}>
-        <input type="submit" value="Load" />
-      </form>
+      <Button onClick={this.handleSubmit} variant='raised' color='primary' size='medium' >Load</Button>
+      <div>{this.state.status}</div>
       <BlockList blockList={this.state.blockListInfo} />
     </div>)
   }
