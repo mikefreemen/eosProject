@@ -23,16 +23,19 @@ class SingleBlock extends Component {
     })
   }
 
-  blockSummary = (props) => (
+  blockSummary = () => (
     <div>
-      <div>Block hash: {this.props.blockInfo.blockId}</div>
+      <div>Block hash: {this.props.blockInfo.blockHash}</div>
       <div>Timestamp: {this.props.blockInfo.timestamp}</div>
       <div># Actions in block: {this.props.blockInfo.numActions}</div>
     </div>
   )
 
-  blockDetails = (props) => (
-    <div>{JSON.stringify(this.props.blockInfo.rawBlockData, null, 2)}</div>
+  blockDetails = () => (
+    <div>
+      <div>{JSON.stringify(this.props.blockInfo.rawBlockData, null, 2)}</div>
+      <div dangerouslySetInnerHTML={ { __html: this.props.blockInfo.ricardingContractAsHtml } } />
+    </div>
   )
 
   render() {

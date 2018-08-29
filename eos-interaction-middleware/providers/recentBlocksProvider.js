@@ -1,5 +1,6 @@
 const eosjs = require('eosjs')
 const config = require('config-yml')
+const _ = require('lodash')
 
 const eosConfig = {
   expireInSeconds: 60,
@@ -38,21 +39,16 @@ async function get () {
   let rawRecentBlocks = await Promise.all(requestList)
 
   // xform BlockArray by pruning all the data we don't need to send the browser
-// NOTE: requirements describe "actions".  Actions are within transactions: block.transactions[{
-//   trx.transaction.actions[{ account }] // use account to getRicardianClauses
-// }]
-  let xformedBlockArray = rawRecentBlocks.map(el => ({
-    blockId: el.block_num,
-    timestamp: el.timestamp,
-    numActions: el.transactions.reduce((acc, tx) => {
-      if( tx.trx && tx.trx.transaction && tx.trx.transaction.actions ) {
-        return tx.trx.transaction.actions.length
-      } else {
-        return 0
-      }
-    }, 0),
-    rawBlockData: el
-  }))
+  let xformedBlockArray = rawRecentBlocks.map(block => {
+    return {
+      blockHash: block.id,
+      timestamp: block.timestamp,
+      numActions: block.transactions.reduce((acc, tx) => {
+        return acc + _.get(tx, 'trx.transaction.actions.length', 0)
+      }, 0),
+      rawBlockData: block
+    }
+  })
   return xformedBlockArray
 }
 

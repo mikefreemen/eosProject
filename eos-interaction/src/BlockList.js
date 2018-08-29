@@ -7,7 +7,7 @@ const { blockPropType } = require('./propTypes/Block.js')
 function BlockList (props) {
   return <Grid container spacing={8} justify='center' alignItems='center'>
     {props.blockList.map(blockInfo => {
-      return (<Grid item xs={12} sm={12} lg={12} xl={12} key={blockInfo.blockId} >
+      return (<Grid item xs={12} sm={12} lg={12} xl={12} key={blockInfo.blockHash} >
         <SingleBlock blockInfo={blockInfo} />
       </Grid>)
     })}
