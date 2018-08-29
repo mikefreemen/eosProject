@@ -12,6 +12,12 @@ const config = {
 
 const eos = eosjs(config)
 
+function getBlockById(id) {
+  return eos.getBlock(id).then(block => {
+    return block
+  })
+}
+
 async function get () {
   let headBlockNum = await fetch('https://api.eosnewyork.io/v1/chain/get_info').then(body => (body.json())).then(resp => {
     console.log(`headBlockNum: ${resp.head_block_num}`)
@@ -22,15 +28,12 @@ async function get () {
     return resp.head_block_num
   })
 
-  let recentBlocks = []
-  // let requestList = []
+  // Construct request list
   // [(headBlockNum-10...headBlockNum].forEach(el => {
-  let rawRecentBlocks = await eos.getBlock(headBlockNum).then(resp => {
-    // console.log(resp)
-    recentBlocks.push(resp)
-    return recentBlocks
-    // res.status(200).send(resp)
-  })
+
+  let rawRecentBlocks = await Promise.all([getBlockById(headBlockNum)])
+  console.log('rawRecentBlocks:')
+  console.log(rawRecentBlocks)
 
   // xform BlockArray by pruning all the data we don't need to send the browser
   let xformedBlockArray = rawRecentBlocks.map(el => ({
@@ -38,6 +41,8 @@ async function get () {
     timestamp: el.timestamp,
     transactions: el.transactions
   }))
+console.log('xformedBlockArray:')
+console.log(xformedBlockArray)
   return xformedBlockArray
 }
 
