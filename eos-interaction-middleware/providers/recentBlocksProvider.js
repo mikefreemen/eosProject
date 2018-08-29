@@ -12,32 +12,33 @@ const config = {
 
 const eos = eosjs(config)
 
-function get () {
-  let recentBlocks = []
-  return fetch('https://api.eosnewyork.io/v1/chain/get_info').then(body => (body.json())).then(resp => {
+async function get () {
+  let headBlockNum = await fetch('https://api.eosnewyork.io/v1/chain/get_info').then(body => (body.json())).then(resp => {
     console.log(`headBlockNum: ${resp.head_block_num}`)
     if( !resp.head_block_num ) {
       throw Error({error: 'head_block_num returned as non-number'})
       //res.status(500).send({error: 'head_block_num returned as non-number'})
     }
     return resp.head_block_num
-  }).then(headBlockNum => {
-    // let requestList = []
-    // [(headBlockNum-10...headBlockNum].forEach(el => {
-    return eos.getBlock(headBlockNum).then(resp => {
-      // console.log(resp)
-      recentBlocks.push(resp)
-      return recentBlocks
-      /*
-      return resp.map(el => ({
-        blockId: el.block_num,
-        timestamp: el.blockstamp,
-        actions: el.transactions
-      })
-      */
-      // res.status(200).send(resp)
-    })
   })
+
+  let recentBlocks = []
+  // let requestList = []
+  // [(headBlockNum-10...headBlockNum].forEach(el => {
+  let rawRecentBlocks = await eos.getBlock(headBlockNum).then(resp => {
+    // console.log(resp)
+    recentBlocks.push(resp)
+    return recentBlocks
+    // res.status(200).send(resp)
+  })
+
+  // xform BlockArray by pruning all the data we don't need to send the browser
+  let xformedBlockArray = rawRecentBlocks.map(el => ({
+    blockId: el.block_num,
+    timestamp: el.timestamp,
+    transactions: el.transactions
+  }))
+  return xformedBlockArray
 }
 
 module.exports = { get }
