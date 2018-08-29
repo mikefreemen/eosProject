@@ -15,14 +15,14 @@ class SingleBlock extends Component {
   }
 
   handleBlockClick = () => {
-    this.setState((prevState) => {
+    this.setState((prevState, props) => {
       return {detailedView: !prevState.detailedView}
     })
   }
 
   blockSummary = (props) => (
     <div onClick={this.handleBlockClick}>
-      <div>Block hash: {this.props.block_num}</div>
+      <div>Block hash: {this.props.blockInfo.blockId}</div>
       <div>Timestamp: {this.props.blockInfo.timestamp}</div>
       <div># Actions in block: {this.props.blockInfo.transactions.length}</div>
     </div>
