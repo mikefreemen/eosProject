@@ -2,8 +2,9 @@ import React, {Component} from 'react'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import './SingleBlock.css'
-//image from https://commons.wikimedia.org/w/index.php?curid=19049310
+// image attribution: https://commons.wikimedia.org/w/index.php?curid=19049310
 import davidRicardoImg from './david_ricardo.jpg'
+const moment = require('moment')
 const { blockPropType } = require('./propTypes/Block.js')
 
 class SingleBlock extends Component {
@@ -29,9 +30,9 @@ class SingleBlock extends Component {
   blockSummary = () => (
     <div className={'block-content'} >
       <div>Block hash: {this.props.blockInfo.blockHash}</div>
-      <div>Timestamp: {this.props.blockInfo.timestamp}</div>
+      <div>Timestamp: {moment(this.props.blockInfo.timestamp).toString()}</div>
       <div># Actions in block: {this.props.blockInfo.numActions}</div>
-      {this.props.blockInfo.ricardianContractAsHtml && <div className={'ricardian-container'}><img className={'ricardo-img'} src={davidRicardoImg} />Ricardian Contract Available</div>}
+      {this.props.blockInfo.ricardianContractAsHtml && <div className={'ricardian-container'}><img className={'ricardo-img'} src={davidRicardoImg} alt='Img of Ricardo' />Ricardian Contract Available</div>}
     </div>
   )
 
