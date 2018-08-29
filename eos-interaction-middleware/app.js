@@ -16,6 +16,5 @@ app.use(cors({
 app.use(compression())
 
 app.use('/getRecentBlocks', require('./getRecentBlocks'))
-app.use('/getRicardianClauses', require('./getRicardianClauses'))
 
 module.exports = app

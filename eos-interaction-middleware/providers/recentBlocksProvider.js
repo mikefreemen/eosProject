@@ -13,30 +13,17 @@ const eosConfig = {
 
 const eos = eosjs(eosConfig)
 
-function getBlockById(id) {
-  return eos.getBlock(id).then(block => {
-    return block
-  })
-}
-
 async function get () {
-  const headBlockNum = await fetch(`${config.bpApiBaseUrl}/v1/chain/get_info`).then(body => (body.json())).then(resp => {
-    if( !resp.head_block_num ) {
-      throw Error({error: 'head_block_num returned as non-number'})
-      //res.status(500).send({error: 'head_block_num returned as non-number'})
-    }
-    return resp.head_block_num
-  })
+  const chainInfo = await eos.getInfo({})
 
-  // Construct block request list
+  // Construct list of block numbers to request
   const blockNumbers = []
   for( let idx=0; idx<10; idx++) {
-    blockNumbers.push(headBlockNum - idx)
+    blockNumbers.push(chainInfo.head_block_num - idx)
   }
 
-  const requestList = blockNumbers.map( blockNum => ( getBlockById( blockNum ) ))
-
-  let rawRecentBlocks = await Promise.all(requestList)
+  const requestList = blockNumbers.map( blockNum => ( eos.getBlock( blockNum ) ))
+  const rawRecentBlocks = await Promise.all(requestList)
 
   // xform BlockArray by pruning all the data we don't need to send the browser
   let xformedBlockArray = rawRecentBlocks.map(block => {
