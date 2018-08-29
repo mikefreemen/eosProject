@@ -17,7 +17,7 @@ describe('Middlware endpoints', function () {
     it('each block should contain the expected fields', function (done) {
       recentBlocksProvider.get().then(blockArray => {
         blockArray.forEach(block => {
-          const expectedProps = ['blockId', 'timestamp', 'numActions', 'rawBlockData]
+          const expectedProps = ['blockId', 'timestamp', 'numActions', 'rawBlockData', 'ricardianContractAsHtml']
           expectedProps.forEach(expectedProp => {
             assert(block[expectedProp], 'A block doesn\'t include the property [' + expectedProp + ']')
           })

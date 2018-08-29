@@ -13,15 +13,11 @@ const eosConfig = {
 
 const eos = eosjs(eosConfig)
 
-function get (accountName) {
-//  console.log(`abi provider accountName[${accountName}]`)
-  return eos.getAbi(accountName).then(abiResult => {
-// console.log('abiResult:')
-// console.log(abiResult)
-    // console.log('get ricardian_contract:')
-    // console.log(_.get(abiResult, 'abi.actions[0].ricardian_contract', ''))
-    return _.get(abiResult, 'abi.actions[0].ricardian_contract', '')
-  })
+async function get (accountName) {
+  // console.log(`abi provider accountName[${accountName}]`)
+  let abiResult = await eos.getAbi(accountName)
+  let rc = _.get(abiResult, 'abi.actions[0].ricardian_contract', '')
+  return rc
 }
 
 /*
