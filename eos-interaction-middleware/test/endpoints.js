@@ -12,21 +12,25 @@ describe('Middlware endpoints', function () {
       }).catch(err => {
         done(err)
       })
-    })
+    }).timeout(8000)
 
     it('each block should contain the expected fields', function (done) {
       recentBlocksProvider.get().then(blockArray => {
         blockArray.forEach(block => {
-          const expectedProps = ['blockId', 'timestamp', 'numActions', 'rawBlockData', 'ricardianContractAsHtml']
+          const expectedProps = ['blockHash', 'timestamp', 'numActions', 'rawBlockData']
           expectedProps.forEach(expectedProp => {
-            assert(block[expectedProp], 'A block doesn\'t include the property [' + expectedProp + ']')
+            if( block[expectedProp] === undefined ) {
+              console.log(`following block lacks prop[${expectedProp}]`)
+              console.log(block)
+            }
+            assert(block[expectedProp] !== undefined, 'A block doesn\'t include the property [' + expectedProp + ']')
           })
         })
         done()
       }).catch(err => {
         done(err)
       })
-    })
+    }).timeout(8000)
       
   })
 })
