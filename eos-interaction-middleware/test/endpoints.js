@@ -21,8 +21,8 @@ describe('Middlware endpoints', function () {
           expectedProps.forEach(expectedProp => {
             assert(block[expectedProp], 'A block doesn\'t include the property [' + expectedProp + ']')
           })
-        done()
         })
+        done()
       }).catch(err => {
         done(err)
       })

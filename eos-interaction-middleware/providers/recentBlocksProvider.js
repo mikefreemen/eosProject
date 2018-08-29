@@ -19,7 +19,7 @@ function getBlockById(id) {
 }
 
 async function get () {
-  let headBlockNum = await fetch('https://api.eosnewyork.io/v1/chain/get_info').then(body => (body.json())).then(resp => {
+  const headBlockNum = await fetch('https://api.eosnewyork.io/v1/chain/get_info').then(body => (body.json())).then(resp => {
     console.log(`headBlockNum: ${resp.head_block_num}`)
     if( !resp.head_block_num ) {
       throw Error({error: 'head_block_num returned as non-number'})
@@ -29,11 +29,15 @@ async function get () {
   })
 
   // Construct request list
-  // [(headBlockNum-10...headBlockNum].forEach(el => {
+  // const blockNumbers = new Array(3).map((x, i) => ( headBlockNum - i ))
+  const blockNumbers = []
+  for( let idx=0; idx<10; idx++) {
+    blockNumbers.push(headBlockNum - idx)
+  }
 
-  let rawRecentBlocks = await Promise.all([getBlockById(headBlockNum)])
-  console.log('rawRecentBlocks:')
-  console.log(rawRecentBlocks)
+  const requestList = blockNumbers.map( blockNum => ( getBlockById( blockNum ) ))
+
+  let rawRecentBlocks = await Promise.all(requestList)
 
   // xform BlockArray by pruning all the data we don't need to send the browser
   let xformedBlockArray = rawRecentBlocks.map(el => ({
@@ -41,8 +45,6 @@ async function get () {
     timestamp: el.timestamp,
     transactions: el.transactions
   }))
-console.log('xformedBlockArray:')
-console.log(xformedBlockArray)
   return xformedBlockArray
 }
 
