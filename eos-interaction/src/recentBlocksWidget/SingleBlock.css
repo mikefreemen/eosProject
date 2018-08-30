@@ -1,0 +1,25 @@
+.detailed-block-header {
+  font-weight: bold;
+}
+
+.raw-block-data {
+  margin-bottom: 20px;
+}
+
+.ricardo-img {
+  height: 80px;
+  margin-left: 10px;
+}
+
+.block-content {
+  position: relative;
+  padding: 1em;
+  text-align: left;
+}
+
+.ricardian-contract-indicator {
+  text-align: right;
+  position: absolute;
+  right: 0px;
+  top: 0px;
+}

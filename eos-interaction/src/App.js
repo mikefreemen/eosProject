@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import eosLogo from './eosLogo.gif'
 import './App.css';
 
-const { RecentBlocksWidget } = require('./RecentBlocksWidget')
+const { RecentBlocksWidget } = require('./recentBlocksWidget/RecentBlocksWidget')
 
 class App extends Component {
 
