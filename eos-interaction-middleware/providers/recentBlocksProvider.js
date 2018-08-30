@@ -1,16 +1,7 @@
 const eosjs = require('eosjs')
-const config = require('config-yml')
 const { xformBlockArray } = require('../xformers/xformBlockArray')
 
-const eosConfig = {
-  expireInSeconds: 60,
-  broadcast: true,
-  debug: false,
-  sign: true,
-  httpEndpoint: config.bpApiBaseUrl,
-  chainId: config.chainId
-}
-
+const eosConfig = require('../config/eosConfig')
 const eos = eosjs(eosConfig)
 
 async function get () {
