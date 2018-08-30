@@ -49,8 +49,8 @@ class SingleBlock extends Component {
     if( !this.props.blockInfo ) return null
     return (<Card onClick={this.handleBlockClick}>
       <CardContent>
+        { this.blockSummary() }
         { this.state.detailedView && this.blockDetails() }
-        { !this.state.detailedView && this.blockSummary() }
       </CardContent>
     </Card>)
   }
