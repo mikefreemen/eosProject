@@ -5,8 +5,8 @@ import Divider from '@material-ui/core/Divider'
 import './SingleBlock.css'
 // image attribution: https://commons.wikimedia.org/w/index.php?curid=19049310
 import davidRicardoImg from './david_ricardo.jpg'
-const moment = require('moment')
-const { blockPropType } = require('../propTypes/Block.js')
+import moment from 'moment'
+import { blockPropType } from '../propTypes/Block.js'
 
 class SingleBlock extends Component {
   state = {

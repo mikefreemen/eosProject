@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import Button from '@material-ui/core/Button'
-const { BlockList } = require('./BlockList')
-const _get = require('lodash.get')
+import _get from 'lodash.get'
+
+import config from '../config.json'
+
+import { BlockList } from './BlockList'
 
 class RecentBlocksWidget extends Component {
 
@@ -22,7 +25,7 @@ class RecentBlocksWidget extends Component {
 
     let recentBlocks
     try {
-      recentBlocks = await fetch('http://localhost:3001/getRecentBlocks').then(async body => (body.json()))
+      recentBlocks = await fetch(`${config.middlewareUrl}/getRecentBlocks`).then(async body => (body.json()))
       this.setState({
         blockListInfo: recentBlocks,
         status: ''

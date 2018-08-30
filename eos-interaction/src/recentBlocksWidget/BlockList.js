@@ -2,7 +2,7 @@ import React from 'react'
 import { SingleBlock } from './SingleBlock'
 import PropTypes from 'prop-types'
 import Grid from '@material-ui/core/Grid'
-const { blockPropType } = require('../propTypes/Block.js')
+import { blockPropType } from '../propTypes/Block.js'
 
 function BlockList (props) {
   return <Grid container spacing={8} justify='center' alignItems='center'>
