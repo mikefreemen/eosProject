@@ -15,9 +15,11 @@ app.use(cors({
 }))
 app.use(compression())
 
-app.use('/getRecentBlocks', require('./getRecentBlocks'))
+app.use('/getRecentBlocks', require('./routes/getRecentBlocks'))
 
 app.use((error, req, res, next) => {
+  console.error('error:')
+  console.error(error)
   res.json({
     error
   })
