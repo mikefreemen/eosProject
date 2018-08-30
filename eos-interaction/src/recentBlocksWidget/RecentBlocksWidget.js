@@ -1,56 +1,16 @@
-import React, { Component } from 'react';
-import Button from '@material-ui/core/Button'
-import _get from 'lodash.get'
+import React from 'react';
 
 import config from '../config.json'
 
-import { BlockList } from './BlockList'
+import { RecentBlocksContainer } from './RecentBlocksContainer'
 
-class RecentBlocksWidget extends Component {
+function RecentBlocksWidget (props) {
 
-  state = {
-    blockListInfo: [],
-    status: ''
+  function fetchRecentBlocks () {
+    return fetch(`${config.middlewareUrl}/getRecentBlocks`).then(async body => (body.json()))
   }
 
-  componentDidMount() {
-    this.fetchRecentBlocks()
-  }
-
-  fetchRecentBlocks = async () => {
-    this.setState({
-      status: 'Loading...',
-      blockListInfo: []
-    })
-
-    let recentBlocks
-    try {
-      recentBlocks = await fetch(`${config.middlewareUrl}/getRecentBlocks`).then(async body => (body.json()))
-      this.setState({
-        blockListInfo: recentBlocks,
-        status: ''
-      })
-    } catch(error) {
-      this.setState({
-        blockListInfo: recentBlocks,
-        status: _get(error, 'message', 'Unknown error while getting blocks.')
-      })
-    }
-
-  }
-
-  handleSubmit = (e) => {
-    this.fetchRecentBlocks()
-    e.preventDefault()
-  }
-
-  render() {
-    return (<div>
-      <Button onClick={this.handleSubmit} variant='raised' color='primary' size='medium' >Load</Button>
-      <div>{this.state.status}</div>
-      <BlockList blockList={this.state.blockListInfo} />
-    </div>)
-  }
+  return <RecentBlocksContainer handleFetchRecentBlocks={fetchRecentBlocks} />
 }
 
 export { RecentBlocksWidget }
