@@ -1,6 +1,6 @@
 const eosjs = require('eosjs')
 const config = require('config-yml')
-const _ = require('lodash')
+const { xformBlockArray } = require('../xformers/xformBlockArray')
 
 const eosConfig = {
   expireInSeconds: 60,
@@ -25,18 +25,7 @@ async function get () {
   const requestList = blockNumbers.map( blockNum => ( eos.getBlock( blockNum ) ))
   const rawRecentBlocks = await Promise.all(requestList)
 
-  // xform BlockArray by pruning all the data we don't need to send the browser
-  let xformedBlockArray = rawRecentBlocks.map(block => {
-    return {
-      blockHash: block.id,
-      timestamp: block.timestamp,
-      numActions: block.transactions.reduce((acc, tx) => {
-        return acc + _.get(tx, 'trx.transaction.actions.length', 0)
-      }, 0),
-      rawBlockData: block
-    }
-  })
-  return xformedBlockArray
+  return xformBlockArray(rawRecentBlocks) 
 }
 
 module.exports = { get }
