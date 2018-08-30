@@ -17,4 +17,10 @@ app.use(compression())
 
 app.use('/getRecentBlocks', require('./getRecentBlocks'))
 
+app.use((error, req, res, next) => {
+  res.json({
+    error
+  })
+})
+
 module.exports = app

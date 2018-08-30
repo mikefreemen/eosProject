@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Button from '@material-ui/core/Button'
 const { BlockList } = require('./BlockList')
+const _get = require('lodash.get')
 
 class RecentBlocksWidget extends Component {
 
@@ -13,19 +14,26 @@ class RecentBlocksWidget extends Component {
     this.fetchRecentBlocks()
   }
 
-  fetchRecentBlocks = () => {
+  fetchRecentBlocks = async () => {
     this.setState({
       status: 'Loading...',
       blockListInfo: []
     })
-    fetch('http://localhost:3001/getRecentBlocks').then(body => (body.json())).then((recentBlocks) => {
+
+    let recentBlocks
+    try {
+      recentBlocks = await fetch('http://localhost:3001/getRecentBlocks').then(async body => (body.json()))
       this.setState({
         blockListInfo: recentBlocks,
         status: ''
       })
-    }).catch((err) => {
-      console.error(err)
-    })
+    } catch(error) {
+      this.setState({
+        blockListInfo: recentBlocks,
+        status: _get(error, 'message', 'Unknown error while getting blocks.')
+      })
+    }
+
   }
 
   handleSubmit = (e) => {

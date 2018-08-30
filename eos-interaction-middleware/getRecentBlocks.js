@@ -2,11 +2,12 @@ const express = require('express')
 const router = express.Router()
 const md = require('markdown-it')()
 const _get = require('lodash.get')
+const { wrapAsync } = require('./wrapAsync')
 
 const recentBlocksProvider = require('./providers/recentBlocksProvider')
 const ricardianContractProvider = require('./providers/ricardianContractProvider')
 
-router.get('/', async (req, res) => {
+router.get('/', wrapAsync(async (req, res) => {
   const blockInfo = await recentBlocksProvider.get()
 
   // Add Ricardian Contract to response body, where we have the data to do so
@@ -28,6 +29,6 @@ router.get('/', async (req, res) => {
     return blockData
   }))
   res.status(200).send(xformedBlockInfo)
-})
+}))
 
 module.exports = router
